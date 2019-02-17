@@ -22,7 +22,7 @@ node {
 
     stage('Build with Gradle'){
         sh "gradle --version"
-        sh "gradle clean"
+        sh "gradle build"
     }
     
     stage('Sonar'){
