@@ -1,6 +1,6 @@
 def CONTAINER_NAME="jenkins-pipeline"
 def CONTAINER_TAG="latest"
-def DOCKER_HUB_USER="vineet0164"
+def DOCKER_HUB_USER="dcmikki"
 def HTTP_PORT="8090"
 
 node {
@@ -8,7 +8,8 @@ node {
     stage('Initialize'){
         def dockerHome = tool 'myDocker'
         def mavenHome  = tool 'myMaven'
-        env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+        def gradleHome  = tool 'myGradle'
+        env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${gradleHome}/bin:${env.PATH}"
     }
 
     stage('Checkout') {
@@ -19,6 +20,11 @@ node {
         sh "mvn clean install"
     }
 
+    stage('Build with Gradle'){
+        sh "gradle --version"
+        sh "gradle clean"
+    }
+    
     stage('Sonar'){
         try {
             sh "mvn sonar:sonar"
